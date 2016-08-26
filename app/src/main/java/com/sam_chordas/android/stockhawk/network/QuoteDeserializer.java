@@ -8,9 +8,6 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-import static com.sam_chordas.android.stockhawk.rest.Utils.truncateBidPrice;
-import static com.sam_chordas.android.stockhawk.rest.Utils.truncateChange;
-
 /**
  * Created by heim on 8/20/16.
  */
@@ -18,12 +15,12 @@ import static com.sam_chordas.android.stockhawk.rest.Utils.truncateChange;
 public class QuoteDeserializer implements JsonDeserializer<Quote> {
     @Override
     public Quote deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        Quote quote = null;
         try {
+            Quote quote = new Quote();
             JsonObject jsonObject = json.getAsJsonObject();
             String change = jsonObject.get("Change").getAsString();
-            quote = new Quote();
             quote.mSymbol = jsonObject.get("symbol").getAsString();
+            quote.mName = jsonObject.get("Name").getAsString();
             quote.mBidPrice = truncateBidPrice(jsonObject.get("Bid").getAsString());
             quote.mPercentChange = truncateChange(jsonObject.get("ChangeinPercent").getAsString(), true);
             quote.mChange = truncateChange(change, false);
@@ -33,9 +30,33 @@ public class QuoteDeserializer implements JsonDeserializer<Quote> {
             } else {
                 quote.mIsUp = 1;
             }
-        } catch (UnsupportedOperationException e) {
-        }
 
-        return quote;
+            return quote;
+        } catch (UnsupportedOperationException e) {
+            return null;
+        }
     }
+
+    private String truncateBidPrice(String bidPrice) {
+        bidPrice = String.format("%.2f", Float.parseFloat(bidPrice));
+        return bidPrice;
+    }
+
+    private String truncateChange(String change, boolean isPercentChange) {
+        String weight = change.substring(0, 1);
+        String ampersand = "";
+        if (isPercentChange) {
+            ampersand = change.substring(change.length() - 1, change.length());
+            change = change.substring(0, change.length() - 1);
+        }
+        change = change.substring(1, change.length());
+        double round = (double) Math.round(Double.parseDouble(change) * 100) / 100;
+        change = String.format("%.2f", round);
+        StringBuffer changeBuffer = new StringBuffer(change);
+        changeBuffer.insert(0, weight);
+        changeBuffer.append(ampersand);
+        change = changeBuffer.toString();
+        return change;
+    }
+
 }

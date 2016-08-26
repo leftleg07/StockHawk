@@ -12,5 +12,6 @@ public interface YahooApiService {
     String BASE_URL = "https://query.yahooapis.com";
 
     @GET("/v1/public/yql")
-    Observable<String> getStocks(@Query("q") String query);
+    Observable<String> getYQL(@Query("q") String query);
+
 }

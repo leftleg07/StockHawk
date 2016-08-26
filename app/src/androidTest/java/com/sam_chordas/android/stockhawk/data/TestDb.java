@@ -34,7 +34,8 @@ public class TestDb {
     @Test
     public void testCreateDb() throws Exception {
         final HashSet<String> tableNameHashSet = new HashSet<String>();
-        tableNameHashSet.add(QuoteContract.TABLE_QUOTES_NAME);
+        tableNameHashSet.add(QuoteContract.TABLE_NAME_QUOTES);
+        tableNameHashSet.add(QuoteContract.TABLE_NAME_HISTORICAL_QUOTE);
 
         SQLiteDatabase db = QuoteDatabase.getInstance(mContext).getWritableDatabase();
         assertThat(db.isOpen()).isTrue();
@@ -49,15 +50,14 @@ public class TestDb {
             tableNameHashSet.remove(c.getString(0));
         } while (c.moveToNext());
 
-        assertWithMessage("Error: Your database was created without the quotes tables").that(tableNameHashSet.isEmpty()).isTrue();
+        assertWithMessage("Error: Your database was created without the tables").that(tableNameHashSet.size()).isEqualTo(0);
         c.close();
 
         /**
          * quotes table
          */
-
         // now, do our tables contain the correct columns?
-        c = db.rawQuery("PRAGMA table_info(" + QuoteContract.TABLE_QUOTES_NAME + ")",
+        c = db.rawQuery("PRAGMA table_info(" + QuoteContract.TABLE_NAME_QUOTES + ")",
                 null);
 
         assertWithMessage("Error: This means that we were unable to query the database for table information.").that(c.moveToFirst()).isTrue();
@@ -83,6 +83,37 @@ public class TestDb {
         // if this fails, it means that your database doesn't contain all of the required location
         // entry columns
         assertWithMessage("Error: The database doesn't contain all of the required quotes entry columns").that(entryColumnHashSet.isEmpty()).isTrue();
+        c.close();
+
+        /**
+         * historical quote table
+         */
+        // now, do our tables contain the correct columns?
+        c = db.rawQuery("PRAGMA table_info(" + QuoteContract.TABLE_NAME_HISTORICAL_QUOTE + ")",
+                null);
+
+        assertWithMessage("Error: This means that we were unable to query the database for table information.").that(c.moveToFirst()).isTrue();
+
+
+        // Build a HashSet of all of the column names we want to look for
+        entryColumnHashSet.clear();
+        entryColumnHashSet.add(HistoricalQuoteColumns._ID);
+        entryColumnHashSet.add(HistoricalQuoteColumns.SYMBOL);
+        entryColumnHashSet.add(HistoricalQuoteColumns.DATE);
+        entryColumnHashSet.add(HistoricalQuoteColumns.LOW);
+        entryColumnHashSet.add(HistoricalQuoteColumns.HIGH);
+        entryColumnHashSet.add(HistoricalQuoteColumns.OPEN);
+
+        columnNameIndex = c.getColumnIndex("name");
+        do {
+            String columnName = c.getString(columnNameIndex);
+            entryColumnHashSet.remove(columnName);
+        } while (c.moveToNext());
+
+        // if this fails, it means that your database doesn't contain all of the required location
+        // entry columns
+        assertWithMessage("Error: The database doesn't contain all of the required historical quote entry columns").that(entryColumnHashSet.isEmpty()).isTrue();
+        c.close();
 
         db.close();
     }
@@ -98,7 +129,7 @@ public class TestDb {
         assertThat(db.isOpen()).isTrue();
 
         Cursor cursor = db.query(
-                QuoteContract.TABLE_QUOTES_NAME,  // Table to Query
+                QuoteContract.TABLE_NAME_QUOTES,  // Table to Query
                 null, // all columns
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause
@@ -110,6 +141,35 @@ public class TestDb {
         assertWithMessage("Error: No Records returned from quotes query").that(cursor.moveToFirst()).isTrue();
 
         TestUtil.validateCurrentRecord("Error: Quotes Query Validation Failed", cursor, testValues);
+
+        cursor.close();
+        db.close();
+
+    }
+
+    @Test
+    public void testHistoricalQuoteTable() throws Exception {
+        ContentValues testValues = TestUtil.createHistoricalQuoteEntryValues();
+
+        // insert data
+        TestUtil.insertHistoricalQuoteEntryValues(mContext);
+
+        SQLiteDatabase db = QuoteDatabase.getInstance(mContext).getWritableDatabase();
+        assertThat(db.isOpen()).isTrue();
+
+        Cursor cursor = db.query(
+                QuoteContract.TABLE_NAME_HISTORICAL_QUOTE,  // Table to Query
+                null, // all columns
+                null, // Columns for the "where" clause
+                null, // Values for the "where" clause
+                null, // columns to group by
+                null, // columns to filter by row groups
+                null // sort order
+        );
+
+        assertWithMessage("Error: No Records returned from historical quote query").that(cursor.moveToFirst()).isTrue();
+
+        TestUtil.validateCurrentRecord("Error: Historical Quote Query Validation Failed", cursor, testValues);
 
         cursor.close();
         db.close();

@@ -2,93 +2,91 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-  compileSdkVersion 23
-  buildToolsVersion "24.0.1"
+    compileSdkVersion 23
+    buildToolsVersion "24.0.1"
 
-  defaultConfig {
-    applicationId "com.example.sam_chordas.stockhawk"
-    minSdkVersion 16
-    targetSdkVersion 23
-    versionCode 1
-    versionName "1.0"
+    defaultConfig {
+        applicationId "com.sam_chordas.android.stockhawk"
+        minSdkVersion 16
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
 
-    testInstrumentationRunner "com.sam_chordas.android.stockhawk.MockTestRunner"
-  }
-  buildTypes {
-    release {
-      minifyEnabled false
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        testInstrumentationRunner "com.sam_chordas.android.stockhawk.MockTestRunner"
     }
-  }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
 
-  packagingOptions {
-    exclude 'META-INF/maven/com.google.guava/guava/pom.properties'
-    exclude 'META-INF/maven/com.google.guava/guava/pom.xml'
-  }
-
-  configurations {
-    androidTestCompile.exclude group: 'com.android.support', module: 'support-v4'
-    androidTestCompile.exclude group: 'com.android.support', module: 'appcompat-v7'
-    androidTestCompile.exclude group: 'com.android.support', module: 'support-annotations'
-  }
+    configurations {
+        androidTestCompile.exclude group: 'com.android.support', module: 'support-v4'
+        androidTestCompile.exclude group: 'com.android.support', module: 'appcompat-v7'
+        androidTestCompile.exclude group: 'com.android.support', module: 'support-annotations'
+    }
 }
 
 repositories {
-  maven { url "https://jitpack.io" }
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
 
-  compile 'com.google.android.gms:play-services-gcm:8.4.0'
-  apt 'net.simonvt.schematic:schematic-compiler:0.6.3'
-  compile 'net.simonvt.schematic:schematic:0.6.3'
-  compile 'com.melnykov:floatingactionbutton:1.2.0'
-  compile 'com.android.support:design:23.1.1'
-  compile('com.github.afollestad.material-dialogs:core:0.8.5.7@aar') {
-    transitive = true
-  }
+    compile 'com.google.android.gms:play-services-gcm:8.+'
+    compile 'net.simonvt.schematic:schematic:0.6.3'
+    apt 'net.simonvt.schematic:schematic-compiler:0.6.3'
+    compile 'com.melnykov:floatingactionbutton:1.2.0'
+    compile 'com.android.support:design:23.+'
+    compile 'com.android.support:support-v4:23.+'
+    compile('com.github.afollestad.material-dialogs:core:0.8.5.7@aar') {
+        transitive = true
+    }
 
-  // butterknife dependencies
-  compile 'com.jakewharton:butterknife:8.+'
-  apt 'com.jakewharton:butterknife-compiler:8.+'
+    // butterknife dependencies
+    compile 'com.jakewharton:butterknife:8.+'
+    apt 'com.jakewharton:butterknife-compiler:8.+'
 
-  // dagger
-  compile 'com.google.dagger:dagger:2.+'
-  apt 'com.google.dagger:dagger-compiler:2.+'
+    // dagger
+    compile 'com.google.dagger:dagger:2.+'
+    apt 'com.google.dagger:dagger-compiler:2.+'
 
-  // retrofit dependencies
-  compile 'com.squareup.retrofit2:retrofit:2.0.2'
-  compile 'com.squareup.retrofit2:converter-scalars:2.0.2'
-  compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+    // retrofit dependencies
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile 'com.squareup.retrofit2:converter-scalars:2.0.2'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
 
-  // gson dependencies
-  compile 'com.google.code.gson:gson:2.+'
+    // gson dependencies
+    compile 'com.google.code.gson:gson:2.+'
 
-  // okhttp log
-  compile 'com.squareup.okhttp3:logging-interceptor:3.+'
+    // okhttp log
+    compile 'com.squareup.okhttp3:logging-interceptor:3.+'
 
-  // statho dependencies
-  compile 'com.facebook.stetho:stetho:1.3.1'
+    // statho dependencies
+    compile 'com.facebook.stetho:stetho:1.3.1'
+
+    // chart dependencies
+    compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
+
+    // Dependencies for local unit tests
+    // robolectric dependencies
+    testCompile 'junit:junit:4.12'
 
 
-  // Dependencies for local unit tests
-  // robolectric dependencies
-  testCompile 'junit:junit:4.12'
+    // expresso dependencies
+    // Android Testing Support Library's runner and rules
+    androidTestCompile 'com.android.support.test:runner:.0.5'
+    androidTestCompile 'com.android.support.test:rules:0.5'
 
-
-  // expresso dependencies
-  // Android Testing Support Library's runner and rules
-  androidTestCompile 'com.android.support.test:runner:.0.5'
-  androidTestCompile 'com.android.support.test:rules:0.5'
-
-  // Espresso UI Testing dependencies.
-  androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    // Espresso UI Testing dependencies.
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
 //    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2'
-  androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
-  androidTestCompile 'com.google.dexmaker:dexmaker:1.2'
-  androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
-  androidTestCompile 'org.mockito:mockito-core:1.10.19'
+    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
+    androidTestCompile 'com.google.dexmaker:dexmaker:1.2'
+    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
+    androidTestCompile 'org.mockito:mockito-core:1.10.19'
 
-  androidTestCompile 'com.google.truth:truth:0.28'
-  androidTestApt 'com.google.dagger:dagger-compiler:2.+'
+    androidTestCompile 'com.google.truth:truth:0.28'
+    androidTestApt 'com.google.dagger:dagger-compiler:2.+'
 }

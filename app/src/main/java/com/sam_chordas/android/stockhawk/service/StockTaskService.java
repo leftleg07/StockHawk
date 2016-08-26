@@ -31,7 +31,6 @@ public class StockTaskService extends GcmTaskService {
 
     private Context mContext;
     private StringBuilder mStoredSymbols = new StringBuilder();
-    private boolean isUpdate;
 
     @Inject
     YahooApiService mApiService;
@@ -50,59 +49,86 @@ public class StockTaskService extends GcmTaskService {
         if (mContext == null) {
             mContext = this;
         }
-        StringBuilder urlStringBuilder = new StringBuilder();
-        // Base URL for the Yahoo query
-        urlStringBuilder.append("select * from yahoo.finance.quotes where symbol "
-                + "in (");
-        if (params.getTag().equals("init") || params.getTag().equals("periodic")) {
-            isUpdate = true;
-            initQueryCursor = mContext.getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
-                    new String[]{"Distinct " + QuoteColumns.SYMBOL}, null,
-                    null, null);
-            if (initQueryCursor.getCount() == 0 || initQueryCursor == null) {
-                // Init task. Populates DB with quotes for the symbols seen below
-                urlStringBuilder.append(
-                        "\"YHOO\",\"AAPL\",\"GOOG\",\"MSFT\")");
-            } else if (initQueryCursor != null) {
-                DatabaseUtils.dumpCursor(initQueryCursor);
-                initQueryCursor.moveToFirst();
-                for (int i = 0; i < initQueryCursor.getCount(); i++) {
-                    mStoredSymbols.append("\"" +
-                            initQueryCursor.getString(initQueryCursor.getColumnIndex("symbol")) + "\",");
-                    initQueryCursor.moveToNext();
-                }
-                mStoredSymbols.replace(mStoredSymbols.length() - 1, mStoredSymbols.length(), ")");
-                urlStringBuilder.append(mStoredSymbols.toString());
-            }
-        } else if (params.getTag().equals("add")) {
-            isUpdate = false;
-            // get symbol from params.getExtra and build query
-            String stockInput = params.getExtras().getString("symbol");
-                urlStringBuilder.append("\"" + stockInput + "\")");
-        }
-
-        String urlString;
-        String getResponse;
         int result = GcmNetworkManager.RESULT_FAILURE;
 
-        if (urlStringBuilder != null) {
-            urlString = urlStringBuilder.toString();
-            getResponse = mApiService.getStocks(urlString).toBlocking().single();
-            result = GcmNetworkManager.RESULT_SUCCESS;
-            try {
-                ContentValues contentValues = new ContentValues();
-                // update ISCURRENT to 0 (false) so new data is current
-                if (isUpdate) {
-                    contentValues.put(QuoteColumns.ISCURRENT, 0);
-                    mContext.getContentResolver().update(QuoteProvider.Quotes.CONTENT_URI, contentValues,
-                            null, null);
+        StringBuilder queryStringBuilder = new StringBuilder();
+        if (params.getTag().equals("hist")) { // historical data
+            // Base URL for the Yahoo query
+            queryStringBuilder.append("select * from yahoo.finance.historicaldata where symbol = ");
+            // get symbol from params.getExtra and build query
+            String stockInput = params.getExtras().getString("symbol");
+            String startInput = params.getExtras().getString("start");
+            String endInput = params.getExtras().getString("end");
+            queryStringBuilder.append("\"" + stockInput + "\" and ");
+            queryStringBuilder.append("startDate = \"" + startInput + "\" and ");
+            queryStringBuilder.append("endDate = \"" + endInput + "\"");
+
+            if (queryStringBuilder != null) {
+                String queryString = queryStringBuilder.toString();
+                String getResponse = mApiService.getYQL(queryString).toBlocking().single();
+                result = GcmNetworkManager.RESULT_SUCCESS;
+                try {
+                    ArrayList batch = Utils.historicalQuoteJsonToContentVals(getResponse, mContext.getContentResolver());
+                    if (batch != null && batch.size() > 0) {
+                        mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY, batch);
+                        mContext.getContentResolver().notifyChange(
+                                QuoteProvider.HistoricalQuoteData.CONTENT_URI, // URI where data was modified
+                                null,                           // No local observer
+                                false);                         // IMPORTANT: Do not sync to network
+                    }
+
+                } catch (RemoteException | OperationApplicationException e) {
+                    Log.e(LOG_TAG, "Error applying batch update", e);
                 }
-                ArrayList batchOperations = Utils.quoteJsonToContentVals(getResponse);
-                if(batchOperations.size() > 0) {
-                    mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY, batchOperations);
+            }
+        } else {    // yahoo quote data
+            boolean isUpdate = false;
+            // Base URL for the Yahoo query
+            queryStringBuilder.append("select * from yahoo.finance.quotes where symbol "
+                    + "in (");
+            if (params.getTag().equals("init") || params.getTag().equals("periodic")) {
+                isUpdate = true;
+                initQueryCursor = mContext.getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
+                        new String[]{"Distinct " + QuoteColumns.SYMBOL}, null,
+                        null, null);
+                if (initQueryCursor.getCount() == 0 || initQueryCursor == null) {
+                    // Init task. Populates DB with quotes for the symbols seen below
+                    queryStringBuilder.append(
+                            "\"YHOO\",\"AAPL\",\"GOOG\",\"MSFT\")");
+                } else if (initQueryCursor != null) {
+                    DatabaseUtils.dumpCursor(initQueryCursor);
+                    initQueryCursor.moveToFirst();
+                    for (int i = 0; i < initQueryCursor.getCount(); i++) {
+                        mStoredSymbols.append("\"" +
+                                initQueryCursor.getString(initQueryCursor.getColumnIndex("symbol")) + "\",");
+                        initQueryCursor.moveToNext();
+                    }
+                    mStoredSymbols.replace(mStoredSymbols.length() - 1, mStoredSymbols.length(), ")");
+                    queryStringBuilder.append(mStoredSymbols.toString());
                 }
-            } catch (RemoteException | OperationApplicationException e) {
-                Log.e(LOG_TAG, "Error applying batch insert", e);
+            } else if (params.getTag().equals("add")) {
+                isUpdate = false;
+                // get symbol from params.getExtra and build query
+                String stockInput = params.getExtras().getString("symbol");
+                queryStringBuilder.append("\"" + stockInput + "\")");
+            }
+
+            if (queryStringBuilder != null) {
+                String queryString = queryStringBuilder.toString();
+                String getResponse = mApiService.getYQL(queryString).toBlocking().single();
+                result = GcmNetworkManager.RESULT_SUCCESS;
+                try {
+                    ArrayList batch = Utils.quoteJsonToContentVals(getResponse, mContext.getContentResolver(), isUpdate);
+                    if (batch != null && batch.size() > 0) {
+                        mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY, batch);
+                        mContext.getContentResolver().notifyChange(
+                                QuoteProvider.Quotes.CONTENT_URI, // URI where data was modified
+                                null,                           // No local observer
+                                false);                         // IMPORTANT: Do not sync to network
+                    }
+                } catch (RemoteException | OperationApplicationException e) {
+                    Log.e(LOG_TAG, "Error applying batch insert", e);
+                }
             }
         }
 

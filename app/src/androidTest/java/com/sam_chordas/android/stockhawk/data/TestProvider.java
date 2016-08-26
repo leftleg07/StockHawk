@@ -28,31 +28,11 @@ public class TestProvider {
     private ContentResolver mContentResolver;
     private Context mContext;
 
-    void deleteAllRecord() {
-
-        mContentResolver.delete(
-                QuoteProvider.Quotes.CONTENT_URI,
-                null,
-                null
-        );
-
-        Cursor cursor = mContentResolver.query(
-                QuoteProvider.Quotes.CONTENT_URI,
-                null,
-                null,
-                null,
-                null
-        );
-        assertWithMessage("Error: Records not deleted from Quotes table during delete").that(cursor.getCount() == 0).isTrue();
-        cursor.close();
-
-    }
-
     @Before
     public void setUp() throws Exception {
         mContext = InstrumentationRegistry.getTargetContext();
         mContentResolver = mContext.getContentResolver();
-        deleteAllRecord();
+        TestUtil.deleteAllRecord(mContext);
     }
 
     @Test
@@ -100,9 +80,39 @@ public class TestProvider {
 
         Cursor cursor = mContentResolver.query(uri, null, null, null, null, null);
 
-        assertTrue("Error: No Records returned from Quotes query", cursor.moveToFirst());
+        assertWithMessage("Error: No Records returned from Quotes query").that(cursor.moveToFirst()).isTrue();
         TestUtil.validateCurrentRecord("Error: Quotes Query Validation Failed", cursor, updateValues);
         cursor.close();
 
+    }
+
+    @Test
+    public void testHistoricalQuoteTable() throws Exception {
+        // insert
+
+        ContentValues testValues = TestUtil.createHistoricalQuoteEntryValues();
+        ContentValues updateValues = new ContentValues(testValues);
+        updateValues.put(HistoricalQuoteColumns.DATE, "2222-22-22");
+
+
+        Uri uri = mContentResolver.insert(QuoteProvider.HistoricalQuoteData.CONTENT_URI, testValues);
+        long quoteId = ContentUris.parseId(uri);
+
+        assertWithMessage("Error: Historical quotes Query Validation Failed").that(testValues.getAsLong(HistoricalQuoteColumns._ID)).isEqualTo(quoteId);
+
+        // update
+        uri = QuoteProvider.HistoricalQuoteData.withSymbol(updateValues.getAsString(HistoricalQuoteColumns.SYMBOL));
+        int count = mContentResolver.update(uri, updateValues, null, null);
+        assertThat(count).isEqualTo(1);
+
+        Cursor cursor = mContentResolver.query(uri, null, null, null, null, null);
+
+        assertWithMessage("Error: No Records returned from Historical quote query").that(cursor.moveToFirst()).isTrue();
+        TestUtil.validateCurrentRecord("Error: Historical quote Query Validation Failed", cursor, updateValues);
+        cursor.close();
+
+        uri = QuoteProvider.HistoricalQuoteData.withSymbolAndDate(updateValues.getAsString(HistoricalQuoteColumns.SYMBOL), updateValues.getAsString(HistoricalQuoteColumns.DATE));
+        cursor = mContentResolver.query(uri, null, null, null, null, null);
+        assertWithMessage("Error: No Records returned from Historical quote query").that(cursor.moveToFirst()).isTrue();
     }
 }

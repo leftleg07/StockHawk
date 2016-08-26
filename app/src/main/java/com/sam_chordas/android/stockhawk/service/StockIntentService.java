@@ -27,8 +27,13 @@ public class StockIntentService extends IntentService {
         Log.d(StockIntentService.class.getSimpleName(), "Stock Intent Service");
         StockTaskService stockTaskService = new StockTaskService(this);
         Bundle args = new Bundle();
-        if (intent.getStringExtra("tag").equals("add")) {
+        if (intent.getStringExtra("tag").equals("add") ) {
             args.putString("symbol", intent.getStringExtra("symbol"));
+        }
+        if(intent.getStringExtra("tag").equals("hist")) {
+            args.putString("symbol", intent.getStringExtra("symbol"));
+            args.putString("start", intent.getStringExtra("start"));
+            args.putString("end", intent.getStringExtra("end"));
         }
         // We can call OnRunTask from the intent service to force it to run immediately instead of
         // scheduling a task.

@@ -11,5 +11,6 @@ public class QuoteDatabase {
   private QuoteDatabase(){}
 
 
-  @Table(QuoteColumns.class) public static final String QUOTES = QuoteContract.TABLE_QUOTES_NAME;
+  @Table(QuoteColumns.class) public static final String QUOTES = QuoteContract.TABLE_NAME_QUOTES;
+  @Table(HistoricalQuoteColumns.class) public static final String HISTORICAL_QUOTE = QuoteContract.TABLE_NAME_HISTORICAL_QUOTE;
 }
