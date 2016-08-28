@@ -8,7 +8,7 @@ import com.sam_chordas.android.stockhawk.di.MockApplicationComponent;
 /**
  * Mock Application
  */
-public class MockApplication extends MyStocksApplication {
+public class MockApplication extends StockApplication {
     public MockApplicationComponent getMockComponent() {
         return mMockComponent;
     }

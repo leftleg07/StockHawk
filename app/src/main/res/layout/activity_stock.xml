@@ -1,6 +1,6 @@
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:name="com.sam_chordas.android.stockhawk.ui.stock.MyStocksFragment"
+    android:name="com.sam_chordas.android.stockhawk.ui.stock.StockFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MyStocksActivity"/>
+    tools:context=".ui.stock.StockActivity"/>

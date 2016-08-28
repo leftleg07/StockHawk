@@ -11,7 +11,7 @@ import com.sam_chordas.android.stockhawk.di.DaggerApplicationComponent;
  * Created by heim on 8/20/16.
  */
 
-public class MyStocksApplication extends Application {
+public class StockApplication extends Application {
     public ApplicationComponent getComponent() {
         return mComponent;
     }

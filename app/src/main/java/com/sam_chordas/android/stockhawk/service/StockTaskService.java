@@ -1,6 +1,5 @@
 package com.sam_chordas.android.stockhawk.service;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
@@ -11,7 +10,7 @@ import android.util.Log;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
-import com.sam_chordas.android.stockhawk.MyStocksApplication;
+import com.sam_chordas.android.stockhawk.StockApplication;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.network.YahooApiService;
@@ -40,7 +39,7 @@ public class StockTaskService extends GcmTaskService {
 
     public StockTaskService(Context context) {
         mContext = context;
-        ((MyStocksApplication) mContext.getApplicationContext()).getComponent().inject(this);
+        ((StockApplication) mContext.getApplicationContext()).getComponent().inject(this);
     }
 
     @Override

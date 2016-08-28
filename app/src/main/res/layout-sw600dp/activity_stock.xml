@@ -5,7 +5,7 @@
     android:baselineAligned="false"
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
-    tools:context=".ui.MyStocksActivity">
+    tools:context=".ui.stock.StockActivity">
 
     <!--
     This layout is a two-pane layout for the Items master/detail flow.
@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/fragment_stocks"
-        android:name="com.sam_chordas.android.stockhawk.ui.stock.MyStocksFragment"
+        android:name="com.sam_chordas.android.stockhawk.ui.stock.StockFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="3"

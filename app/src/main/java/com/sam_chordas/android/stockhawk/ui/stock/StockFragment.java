@@ -41,7 +41,6 @@ import com.sam_chordas.android.stockhawk.rest.Utils;
 import com.sam_chordas.android.stockhawk.service.StockIntentService;
 import com.sam_chordas.android.stockhawk.service.StockTaskService;
 import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
-import com.sam_chordas.android.stockhawk.ui.detail.DetailActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,10 +49,10 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MyStocksFragment.OnFragmentInteractionListener} interface
+ * {@link StockFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class MyStocksFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class StockFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private OnFragmentInteractionListener mListener;
 
@@ -73,7 +72,7 @@ public class MyStocksFragment extends Fragment implements LoaderManager.LoaderCa
     @BindView(R.id.viewSwitcher)
     ViewSwitcher mViewSwitcher;
 
-    public MyStocksFragment() {
+    public StockFragment() {
         // Required empty public constructor
     }
 
@@ -133,7 +132,7 @@ public class MyStocksFragment extends Fragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_stocks, container, false);
+        return inflater.inflate(R.layout.fragment_stock, container, false);
     }
 
     @Override
@@ -141,10 +140,6 @@ public class MyStocksFragment extends Fragment implements LoaderManager.LoaderCa
         super.onViewCreated(view, savedInstanceState);
 
         ButterKnife.bind(this, view);
-
-        mViewSwitcher.setInAnimation(getContext(), android.R.anim.fade_in);
-        mViewSwitcher.setOutAnimation(getContext(), android.R.anim.fade_out);
-
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

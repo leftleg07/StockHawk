@@ -1,19 +1,19 @@
 <resources>
-    <string name="app_name">Stock Hawk</string>
+    <string name="app_name" translatable="true">Stock Hawk</string>
 
-    <string name="action_example">Example action</string>
+    <string name="action_example" translatable="true">Example action</string>
 
-    <string name="action_settings">Settings</string>
-    <string name="action_change_units">Change Units</string>
-    <string name="symbol_search">Symbol Search</string>
-    <string name="content_test">Search for a Stock Symbol</string>
-    <string name="input_hint">FB</string>
-    <string name="input_prefill"></string>
-    <string name="network_toast">Uh-oh! This app requires an internet connection</string>
+    <string name="action_settings" translatable="true">Settings</string>
+    <string name="action_change_units" translatable="true">Change Units</string>
+    <string name="symbol_search" translatable="true">Symbol Search</string>
+    <string name="content_test" translatable="true">Search for a Stock Symbol</string>
+    <string name="input_hint" translatable="true">FB</string>
+    <string name="input_prefill" translatable="true"></string>
+    <string name="network_toast" translatable="true">Uh-oh! This app requires an internet connection</string>
 
-    <string name="empty_text">Please wait! Stock data are synchronizing...</string>
-    <string name="empty_chart">You need to provide data for the chart.</string>
+    <string name="empty_text" translatable="true">Please wait! synchronizing...</string>
+    <string name="empty_chart" translatable="true">You need to provide data for the chart.</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_symbol" translatable="true">Add a new stock symbol</string>
+    <string name="title_widget_stock">Stock Today</string>
 </resources>
