@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import com.sam_chordas.android.stockhawk.R;
 
+/**
+ * stock detail activity
+ */
 public class DetailActivity extends AppCompatActivity {
 
     @Override

@@ -16,7 +16,7 @@
             android:layout_gravity="center"
             android:text="@string/title_widget_stock"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/md_title_textsize" />
+            android:textSize="20sp" />
     </FrameLayout>
 
     <ListView

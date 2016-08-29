@@ -12,7 +12,7 @@ import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.ui.detail.DetailActivity;
 import com.sam_chordas.android.stockhawk.ui.detail.DetailFragment;
 
-public class StockActivity extends AppCompatActivity implements StockFragment.OnFragmentInteractionListener{
+public class StockActivity extends AppCompatActivity implements StockFragment.OnFragmentInteractionListener {
 
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
 
@@ -37,14 +37,6 @@ public class StockActivity extends AppCompatActivity implements StockFragment.On
             // (res/layout-sw600dp). If this view is present, then the activity should be
             // in two-pane mode.
             mTwoPane = true;
-            // In two-pane mode, show the detail view in this activity by
-            // adding or replacing the detail fragment using a
-            // fragment transaction.
-//            if (savedInstanceState == null) {
-//                getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.stock_detail_container, new DetailFragment(), DETAILFRAGMENT_TAG)
-//                        .commit();
-//            }
         } else {
             mTwoPane = false;
             getSupportActionBar().setElevation(0f);

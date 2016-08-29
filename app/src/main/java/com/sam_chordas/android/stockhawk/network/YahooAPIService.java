@@ -5,7 +5,7 @@ import retrofit2.http.Query;
 import rx.Observable;
 
 /**
- * Created by heim on 8/20/16.
+ * Yahoo query api
  */
 
 public interface YahooApiService {

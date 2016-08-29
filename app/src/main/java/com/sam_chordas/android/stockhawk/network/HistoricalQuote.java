@@ -3,7 +3,7 @@ package com.sam_chordas.android.stockhawk.network;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by gsshop on 2016. 8. 23..
+ * historical data
  */
 
 public class HistoricalQuote {

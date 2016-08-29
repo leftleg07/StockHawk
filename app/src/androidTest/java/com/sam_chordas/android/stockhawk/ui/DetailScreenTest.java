@@ -17,7 +17,7 @@ import org.junit.runner.RunWith;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by gsshop on 2016. 8. 24..
+ * Detail screen test
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest

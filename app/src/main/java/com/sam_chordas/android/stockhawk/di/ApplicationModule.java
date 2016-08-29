@@ -23,7 +23,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
- * Created by heim on 8/20/16.
+ * dagger application module
  */
 @Module
 public class ApplicationModule {

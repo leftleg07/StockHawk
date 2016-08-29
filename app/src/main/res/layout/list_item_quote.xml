@@ -5,9 +5,9 @@
     android:layout_height="72dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingLeft="16dp"
+    android:paddingStart="16dp"
     android:id="@+id/stock_list_item"
-    android:paddingRight="16dp">
+    android:paddingEnd="16dp">
 
     <TextView
         android:id="@+id/stock_symbol"
@@ -28,7 +28,8 @@
             style="@style/BidPriceTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="8sp"
+            android:paddingEnd="8sp"
+            android:paddingStart="8sp"
             tools:text="1000.00" />
 
         <TextView
@@ -37,8 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/percent_change_pill"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp"
             tools:text="100%" />
     </LinearLayout>
 </LinearLayout>

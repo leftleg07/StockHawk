@@ -15,5 +15,5 @@
     <string name="empty_chart" translatable="true">You need to provide data for the chart.</string>
 
     <string name="add_symbol" translatable="true">Add a new stock symbol</string>
-    <string name="title_widget_stock">Stock Today</string>
+    <string name="title_widget_stock">Stock Hawk</string>
 </resources>

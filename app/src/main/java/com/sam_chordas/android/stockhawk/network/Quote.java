@@ -1,7 +1,7 @@
 package com.sam_chordas.android.stockhawk.network;
 
 /**
- * Created by heim on 8/20/16.
+ * quote data
  */
 
 public class Quote {

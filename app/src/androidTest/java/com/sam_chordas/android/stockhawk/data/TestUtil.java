@@ -13,7 +13,7 @@ import java.util.Set;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 /**
- * Created by heim on 8/20/16.
+ * db test util class
  */
 public abstract class TestUtil {
     public static void deleteDatabase(Context context) {

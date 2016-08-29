@@ -28,7 +28,7 @@ import java.util.concurrent.CountDownLatch;
 import static com.google.common.truth.Truth.assertThat;
 
 /**
- * Created by heim on 8/21/16.
+ * service test
  */
 @RunWith(AndroidJUnit4.class)
 public class TestStockIntentService {

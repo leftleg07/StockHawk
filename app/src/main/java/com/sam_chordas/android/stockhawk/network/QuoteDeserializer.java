@@ -9,7 +9,7 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 
 /**
- * Created by heim on 8/20/16.
+ * quote json deserializer
  */
 
 public class QuoteDeserializer implements JsonDeserializer<Quote> {
