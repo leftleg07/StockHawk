@@ -45,8 +45,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
             android:textColor="@android:color/black"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            tools:ignore="RtlCompat" />
 
         <TextView
             android:id="@+id/textView_detail_change"

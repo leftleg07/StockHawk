@@ -208,7 +208,7 @@ public class StockFragment extends Fragment implements LoaderManager.LoaderCallb
                                     new String[]{input.toString()}, null);
                             if (c.getCount() != 0) {
                                 Toast toast =
-                                        Toast.makeText(getContext(), "This stock is already saved!",
+                                        Toast.makeText(getContext(), R.string.save_message,
                                                 Toast.LENGTH_LONG);
                                 toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                                 toast.show();

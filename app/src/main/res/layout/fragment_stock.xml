@@ -21,8 +21,8 @@
             android:id="@+id/textView_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
             android:text="@string/empty_text"
+            android:textColor="@android:color/black"
             android:textSize="14sp" />
 
     </LinearLayout>
@@ -36,16 +36,18 @@
             android:id="@+id/recycler_view"
             style="@style/stockListStyle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="48dp" />
 
         <com.melnykov.fab.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
+            android:layout_gravity="bottom|end|right"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_add_white_24dp"
             android:contentDescription="@string/add_symbol"
+            android:src="@drawable/ic_add_white_24dp"
             fab:fab_colorNormal="@color/material_blue_500"
             fab:fab_colorPressed="@color/material_blue_600"
             fab:fab_colorRipple="@color/ripple"
